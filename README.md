@@ -1,7 +1,14 @@
-# manage-system #
-基于Vue.js 2.x系列 + Element UI 的后台管理系统解决方案。[线上地址](http://work.fengdb.com/)
+# vue-manage-system #
+基于Vue.js 2.x系列 + Element UI 的后台管理系统解决方案。[线上地址](http://blog.gdfengshuo.com/example/work/)
 
 [English document](https://github.com/lin-xin/manage-system/blob/master/README_EN.md)
+
+[更新日志](https://github.com/lin-xin/vue-manage-system/releases)
+
+## 赞赏
+请作者喝杯咖啡吧！
+
+![微信扫一扫](http://blog.gdfengshuo.com/images/weixin.jpg)
 
 ## 前言 ##
 之前在公司用了Vue + Element组件库做了个后台管理系统，基本很多组件可以直接引用组件库的，但是也有一些需求无法满足。像图片裁剪上传、富文本编辑器、图表等这些在后台管理系统中很常见的功能，就需要引用其他的组件才能完成。从寻找组件，到使用组件的过程中，遇到了很多问题，也积累了宝贵的经验。所以我就把开发这个后台管理系统的经验，总结成这个后台管理系统解决方案。
@@ -11,13 +18,20 @@
 ## 功能 ##
 - [x] Element UI
 - [x] 登录/注销
+- [x] Dashboard
 - [x] 表格
+- [x] Tab选项卡
 - [x] 表单
 - [x] 图表 :bar_chart:
 - [x] 富文本编辑器
 - [x] markdown编辑器
 - [x] 图片拖拽/裁剪上传
 - [x] 支持切换主题色 :sparkles:
+- [x] 列表拖拽排序
+- [x] 权限测试
+- [x] 404 / 403
+- [x] 三级菜单
+- [x] 自定义图标
 
 
 ## 目录结构介绍 ##
@@ -27,20 +41,25 @@
 	|-- src                              // 源码目录
 	|   |-- components                   // 组件
 	|       |-- common                   // 公共组件
+	|           |-- bus.js           	 // Event Bus
 	|           |-- Header.vue           // 公共头部
 	|           |-- Home.vue           	 // 公共路由入口
 	|           |-- Sidebar.vue          // 公共左边栏
-	|		|-- page                   	 // 主要路由页面
+	|           |-- Tags.vue           	 // 页面切换标签组件
+	|       |-- page                   	 // 主要路由页面
+	|           |-- 403.vue
+	|           |-- 404.vue
 	|           |-- BaseCharts.vue       // 基础图表
 	|           |-- BaseForm.vue         // 基础表单
 	|           |-- BaseTable.vue        // 基础表格
+	|           |-- DashBoard.vue        // 系统首页
+	|           |-- DragList.vue         // 拖拽列表组件
+	|           |-- Icon.vue			 // 自定义图标组件
 	|           |-- Login.vue          	 // 登录
 	|           |-- Markdown.vue         // markdown组件
-	|           |-- MixCharts.vue        // 混合图表
-	|           |-- Readme.vue           // 自述组件
+	|           |-- Premission.vue       // 权限测试组件
 	|           |-- Upload.vue           // 图片上传
 	|           |-- VueEditor.vue        // 富文本编辑器
-	|           |-- VueTable.vue         // vue表格组件
 	|   |-- App.vue                      // 页面入口文件
 	|   |-- main.js                      // 程序入口文件，加载各种公共组件
 	|-- .babelrc                         // ES6语法编译配置
@@ -53,9 +72,9 @@
 
 ## 安装步骤 ##
 
-	git clone https://github.com/lin-xin/manage-system.git		// 把模板下载到本地
-	cd manage-system											// 进入模板目录
-	npm install													// 安装项目依赖，等待安装完成之后
+	git clone https://github.com/lin-xin/vue-manage-system.git      // 把模板下载到本地
+	cd vue-manage-system    // 进入模板目录
+	npm install         // 安装项目依赖，等待安装完成之后
 
 ## 本地开发 ##
 
@@ -69,213 +88,96 @@
 
 ## 组件使用说明与演示 ##
 
-### element-ui ###
-一套基于vue.js2.0的桌面组件库。访问地址：[element](http://element.eleme.io/#/zh-CN/component/layout)
+### vue-schart ###
+vue.js封装sChart.js的图表组件。访问地址：[vue-schart](https://github.com/linxin/vue-schart)
+<p><a href="https://www.npmjs.com/package/vue-schart"><img src="https://img.shields.io/npm/dm/vue-schart.svg" alt="Downloads"></a></p>
 
-### vue-datasource ###
-一个用于动态创建表格的vue.js服务端组件。访问地址：[vue-datasource](https://github.com/coderdiaz/vue-datasource)
-
-```JavaScript
-<template>
-	<div>
-		<datasource language="en" :table-data="information.data"
-	        :columns="columns"
-	        :pagination="information.pagination"
-	        :actions="actions"
-	        v-on:change="changePage"
-	        v-on:searching="onSearch"></datasource>
-	</div>
-</template>
-
-<script>
-	import Datasource from 'vue-datasource';					// 导入quillEditor组件
-    export default {
-        data: function(){
-            return {
-                information: {
-	                pagination: {...},						// 页码配置
-	                data: [...]
-	            },
-	            columns: [...],								// 列名配置
-	            actions: [...]								// 功能配置
-            }
-        },
-        components: {
-            Datasource										// 声明组件Datasource
-        },
-	    methods: {
-	        changePage(values) {...},
-	        onSearch(searchQuery) {...}
-	    }
-	}
-</script>
-```
-
-
-### Vue-Quill-Editor ###
-基于Quill、适用于Vue2的富文本编辑器。访问地址：[vue-quill-editor](https://github.com/surmon-china/vue-quill-editor)
-
-```JavaScript
-<template>
-	<div>
-		<quill-editor ref="myTextEditor" v-model="content" :config="editorOption"></quill-editor>
-	</div>
-</template>
-
-<script>
-	import { quillEditor } from 'vue-quill-editor';			// 导入quillEditor组件
-    export default {
-        data: function(){
-            return {
-                content: '',								// 编辑器的内容
-                editorOption: {								// 编辑器的配置
-                    // something config
-                }
-            }
-        },
-        components: {
-            quillEditor										// 声明组件quillEditor
-        }
-	}
-</script>
-```
-
-### Vue-SimpleMDE ###
-Vue.js的Markdown Editor组件。访问地址：[Vue-SimpleMDE](https://github.com/F-loat/vue-simplemde)
-
-```JavaScript
+```html
 <template>
     <div>
-        <markdown-editor v-model="content" :configs="configs" ref="markdownEditor"></markdown-editor>
-    </div>
-</template>
-
-<script>
-    import { markdownEditor } from 'vue-simplemde';			// 导入markdownEditor组件
-    export default {
-        data: function(){
-            return {
-                content:'',									// markdown编辑器内容
-                configs: {									// markdown编辑器配置参数
-                    status: false,							// 禁用底部状态栏
-                    initialValue: 'Hello BBK',				// 设置初始值
-                    renderingConfig: {
-                        codeSyntaxHighlighting: true,		// 开启代码高亮
-                        highlightingTheme: 'atom-one-light' // 自定义代码高亮主题
-                    }
-                }
-            }
-        },
-        components: {
-            markdownEditor									// 声明组件markdownEditor
-        }
-    }
-</script>
-```
-
-### Vue-Core-Image-Upload ###
-一款轻量级的vue上传插件，支持裁剪。访问地址：[Vue-Core-Image-Upload](https://github.com/Vanthink-UED/vue-core-image-upload)
-
-```JavaScript
-
-<template>
-    <div>
-		<img :src="src">									// 用于显示上传的图片
-        <vue-core-image-upload :class="['pure-button','pure-button-primary','js-btn-crop']"
-           :crop="true"										// 是否裁剪
-           text="上传图片"
-           url=""											// 上传路径
-           extensions="png,gif,jpeg,jpg"					// 限制文件类型
-           @:imageuploaded="imageuploaded">					// 监听图片上传完成事件
-		</vue-core-image-upload>
-    </div>
-</template>
-
-<script>
-    import VueCoreImageUpload  from 'vue-core-image-upload';	// 导入VueCoreImageUpload组件
-    export default {
-        data: function(){
-            return {
-                src:'../img/1.jpg'							// 默认显示图片地址
-            }
-        },
-        components: {
-            VueCoreImageUpload								// 声明组件VueCoreImageUpload
-        },
-        methods:{
-            imageuploaded(res) {							// 定义上传完成执行的方法
-                console.log(res)
-            }
-        }
-    }
-</script>
-
-```
-
-### vue-echarts-v3 ###
-基于vue2和eCharts.js3的图表组件。访问地址：[vue-echarts-v3](https://github.com/xlsdg/vue-echarts-v3)
-
-```JavaScript
-<template>
-    <div>
-        <IEcharts :option="bar"></IEcharts>
+        <schart  class="wrapper"
+				:canvasId="canvasId"
+				:type="type"
+				:data="data"
+				:options="options"
+		></schart>
     </div>
 </template>
 	
 <script>
-    import IEcharts from 'vue-echarts-v3';					// 导入IEcharts组件
+    import Schart from 'vue-schart';        // 导入Schart组件
     export default {
         data: function(){
             return {
-                bar: {
-			        title: {
-			          text: '柱状图'							// 图标标题文本
-			        },
-			        tooltip: {},	
-			        xAxis: {								// 横坐标
-			          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-			        },
-			        yAxis: {},								// 纵坐标
-			        series: [{
-			          name: '销量',
-			          type: 'bar',							// 图标类型
-			          data: [5, 20, 36, 10, 10, 20]
-			        }]
-			   	}
+                canvasId: 'myCanvas',       // canvas的id
+                type: 'bar',                // 图表类型
+                data: [
+                    {name: '2014', value: 1342},
+                    {name: '2015', value: 2123},
+                    {name: '2016', value: 1654},
+                    {name: '2017', value: 1795},
+                ],
+                options: {                  // 图表可选参数
+                    title: 'Total sales of stores in recent years'
+                }
             }
         },
         components: {
-            IEcharts								// 声明组件VueCoreImageUpload
+            Schart
         }
     }
 </script>
+<style>
+.wrapper{
+	width: 7rem;
+	height: 5rem;
+}
+</style>
 ```
+
+### element-ui ###
+一套基于vue.js2.0的桌面组件库。访问地址：[element](http://element.eleme.io/#/zh-CN/component/layout)
+
+### Vue-Quill-Editor ###
+基于Quill、适用于Vue2的富文本编辑器。访问地址：[vue-quill-editor](https://github.com/surmon-china/vue-quill-editor)
+
+（IE10及以下不支持）
+
+### mavonEditor ###
+基于Vue的markdown编辑器。访问地址：[mavonEditor](https://github.com/hinesboy/mavonEditor)
+
+### vue-cropperjs ###
+一个封装了 cropperjs 的 Vue 组件，用于裁剪图片。访问地址：[vue-cropperjs](https://github.com/Agontuk/vue-cropperjs)
 
 ## 其他注意事项 ##
 ### 一、如果我不想用到上面的某些组件呢，那我怎么在模板中删除掉不影响到其他功能呢？ ###
 
-举个栗子，我不想用 vue-datasource 这个组件，那我需要分四步走。
+举个栗子，我不想用 Vue-Quill-Editor 这个组件，那我需要分四步走。
 
 第一步：删除该组件的路由，在目录 src/router/index.js 中，找到引入改组件的路由，删除下面这段代码。
 
 ```JavaScript
 {
-    path: '/vuetable',
-    component: resolve => require(['../components/page/VueTable.vue'], resolve)     // vue-datasource组件
+    // 富文本编辑器组件
+    path: '/editor',
+    component: resolve => require(['../components/page/VueEditor.vue'], resolve) 
 },
 ```
 
-第二步：删除引入该组件的文件。在目录 src/components/page/ 删除 VueTable.vue 文件。
+第二步：删除引入该组件的文件。在目录 src/components/page/ 删除 VueEditor.vue 文件。
 
 第三步：删除该页面的入口。在目录 src/components/common/Sidebar.vue 中，找到该入口，删除下面这段代码。
 	
-```HTML
-<el-menu-item index="vuetable">Vue表格组件</el-menu-item>
+```js
+{
+	index: 'editor',
+	title: '富文本编辑器'
+},
 ```
 
 第四步：卸载该组件。执行以下命令：
 	
-	npm un vue-datasource -S
+	npm un vue-quill-editor -S
 
 完成。
 
@@ -296,7 +198,7 @@ import 'element-ui/lib/theme-default/index.css';    // 默认主题
 /*@import "../static/css/theme-green/color-green.css";   !*浅绿色主题*!*/
 ```
 
-第三步：打开 src/components/common/Sidebar.vue 文件，找到 el-menu 标签，把 theme="dark" 去掉即可。
+第三步：打开 src/components/common/Sidebar.vue 文件，找到 el-menu 标签，把 background-color/text-color/active-text-color 属性去掉即可。
 
 ## 项目截图 ##
 ### 默认皮肤 ###

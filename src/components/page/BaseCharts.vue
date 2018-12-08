@@ -2,153 +2,108 @@
     <div>
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-date"></i> 图表</el-breadcrumb-item>
-                <el-breadcrumb-item>基础图表</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-favor"></i> schart图表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="plugins-tips">
-            vue-echarts-v3：基于vue2和eCharts.js3的图表组件。
-            访问地址：<a href="https://github.com/xlsdg/vue-echarts-v3" target="_blank">vue-echarts-v3</a>
-        </div>
-        <div class="echarts">
-            <IEcharts :option="line" ></IEcharts>
-        </div>
-        <div class="echarts">
-            <IEcharts :option="bar" ></IEcharts>
-        </div>
-        <div class="echarts">
-            <IEcharts :option="pie" ></IEcharts>
-        </div>
-        <div class="echarts">
-            <IEcharts :option="pie_radius" ></IEcharts>
+        <div class="container">
+            <div class="plugins-tips">
+                vue-schart：vue.js封装sChart.js的图表组件。
+                访问地址：<a href="https://github.com/lin-xin/vue-schart" target="_blank">vue-schart</a>
+            </div>
+            <div class="schart-box">
+                <div class="content-title">柱状图</div>
+                <schart class="schart" canvasId="bar" :data="data1" type="bar" :options="options1"></schart>
+            </div>
+            <div class="schart-box">
+            <div class="content-title">折线图</div>
+            <schart class="schart" canvasId="line" :data="data1" type="line" :options="options2"></schart>
+            </div>
+            <div class="schart-box">
+            <div class="content-title">饼状图</div>
+            <schart class="schart" canvasId="pie" :data="data2" type="pie" :options="options3"></schart>
+            </div>
+            <div class="schart-box">
+            <div class="content-title">环形图</div>
+            <schart class="schart" canvasId="ring" :data="data2" type="ring" :options="options4"></schart>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import IEcharts from 'vue-echarts-v3';
+    import Schart from 'vue-schart';
     export default {
+        name: 'basecharts',
         components: {
-            IEcharts
+            Schart
         },
         data: () => ({
-            line: {
-                color:["#20a0ff","#13CE66","#F7BA2A","#FF4949"],
-                title: {
-                    text: '曲线图'
-                },
-                xAxis: {
-                    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-                },
-                yAxis:{},
-                series: [
-                    {
-                        name: "销量",
-                        type: "line",
-                        data: [5, 20, 36, 10, 10, 20]
-                    }
-                ]
+            data1:[
+                {name:'2012',value:1141},
+                {name:'2013',value:1499},
+                {name:'2014',value:2260},
+                {name:'2015',value:1170},
+                {name:'2016',value:970},
+                {name:'2017',value:1450}
+            ],
+            data2 : [
+                {name:'短袖',value:1200},
+                {name:'休闲裤',value:1222},
+                {name:'连衣裙',value:1283},
+                {name:'外套',value:1314},
+                {name:'羽绒服',value:2314}
+            ],
+            options1: {
+                title: '某商店近年营业总额',
+                autoWidth: true,   // 设置宽高自适应
+                showValue: false,
+                bgColor: '#F9EFCC',
+                fillColor: '#00887C',
+                contentColor: 'rgba(46,199,201,0.3)',
+                yEqual: 7
             },
-            bar: {
-                color:["#20a0ff","#13CE66","#F7BA2A","#FF4949"],
-                title: {
-                    text: '柱状图'
-                },
-                xAxis: {
-                    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-                },
-                yAxis:{},
-                series: [
-                    {
-                        name: "销量",
-                        type: "bar",
-                        data: [5, 20, 36, 10, 10, 20]
-                    }
-                ]
+            options2: {
+                title: '某商店近年营业总额',
+                bgColor: '#D5E4EB',
+                titleColor: '#00887C',
+                fillColor: 'red',
+                contentColor: 'rgba(46,199,201,0.3)'
             },
-            pie: {
-                color:["#20a0ff","#13CE66","#F7BA2A","#FF4949","#61a0a8"],
-                title : {
-                    text: '饼状图',
-                    x:'center'
-                },
-                tooltip : {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
-                },
-                legend: {
-                    orient: 'vertical',
-                    left: 'left',
-                    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋"]
-                },
-                series : [
-                    {
-                        name: '销量',
-                        type: 'pie',
-                        radius : '55%',
-                        center: ['50%', '50%'],
-                        data:[
-                            {value:335, name:'衬衫'},
-                            {value:310, name:'羊毛衫'},
-                            {value:234, name:'雪纺衫'},
-                            {value:135, name:'裤子'},
-                            {value:548, name:'高跟鞋'}
-                        ],
-                        itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
-                    }
-                ]
+            options3: {
+                title: '某商店各商品年度销量',
+                bgColor: '#829dca',
+                titleColor: '#ffffff',
+                legendColor: '#ffffff',
+                radius: 120
             },
-            pie_radius:{
-                color:["#20a0ff","#13CE66","#F7BA2A","#FF4949","#61a0a8"],
-                title : {
-                    text: '环形图',
-                    x:'center'
-                },
-                tooltip : {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
-                },
-                legend: {
-                    orient: 'vertical',
-                    left: 'left',
-                    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋"]
-                },
-                series : [
-                    {
-                        name: '销量',
-                        type: 'pie',
-                        radius : ['40%','60%'],
-                        data:[
-                            {value:335, name:'衬衫'},
-                            {value:310, name:'羊毛衫'},
-                            {value:234, name:'雪纺衫'},
-                            {value:135, name:'裤子'},
-                            {value:548, name:'高跟鞋'}
-                        ],
-                        itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
-                    }
-                ]
+            options4: {
+                title: '某商店各商品年度销量',
+                bgColor: '#829daa',
+                titleColor: '#ffffff',
+                legendColor: '#ffffff',
+                radius: 120,
+                innerRadius:80
             }
         })
     }
 </script>
 
 <style scoped>
-    .echarts {
-        float: left;
+.schart-box{
+    display: inline-block;
+    margin: 20px;
+}
+    .schart{
         width: 500px;
         height: 400px;
     }
+    .content-title{
+        clear: both;
+        font-weight: 400;
+        line-height: 50px;
+        margin: 10px 0;
+        font-size: 22px;
+        color: #1f2f3d;
+    }
+    
 </style>
